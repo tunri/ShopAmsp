@@ -13,11 +13,11 @@ import PersonIcon from "@mui/icons-material/Person";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 
-import MenuLanguages from "../../MenuLanguages";
+import MenuLanguages from "../MenuLanguages";
 import MenuNavigation from "./MenuNavigation";
 
 // assets
-import Logo from "../../../public/images/logo.png";
+import Logo from "../../public/images/logo.png";
 import UserProfileMenu from "./UserProfileMenu";
 
 const Header = () => {
