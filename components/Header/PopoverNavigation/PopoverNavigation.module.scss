@@ -1,0 +1,15 @@
+.menu {
+    position: absolute;
+    background-color: #eee;
+    color: #444;
+    top: 100%;
+    width: 100%;
+    min-height: 200px;
+}
+
+.menu_top {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

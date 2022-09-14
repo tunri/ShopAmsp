@@ -1,7 +1,7 @@
 import React from "react";
 import IconButton from "@mui/material/IconButton";
-import { styled, alpha } from '@mui/material/styles';
-import Menu, { MenuProps } from '@mui/material/Menu';
+import { styled, alpha } from "@mui/material/styles";
+import Menu, { MenuProps } from "@mui/material/Menu";
 import Divider from "@mui/material/Divider";
 import MenuItem from "@mui/material/MenuItem";
 import PersonIcon from "@mui/icons-material/Person";
@@ -24,7 +24,7 @@ const StyledMenu = styled((props: MenuProps) => (
 		borderRadius: 6,
 		marginTop: theme.spacing(1),
 		minWidth: 180,
-        width: 280,
+		width: 280,
 		color:
 			theme.palette.mode === "light"
 				? "rgb(55, 65, 81)"
@@ -82,12 +82,15 @@ const UserProfileMenu = () => {
 					"aria-labelledby": "basic-button",
 				}}
 			>
-				<MenuItem>Profile</MenuItem>
+				<MenuItem>Jerson Victor</MenuItem>
 				<Divider />
 				<MenuItem onClick={handleClose}>Profile</MenuItem>
-				<MenuItem onClick={handleClose}>My account</MenuItem>
-                <Divider />
-				<MenuItem onClick={handleClose}>Cerrar sesión</MenuItem>
+				<MenuItem onClick={handleClose}>Mis ordenes</MenuItem>
+				<MenuItem onClick={handleClose}>Gestionar direcciones</MenuItem>
+				<MenuItem onClick={handleClose}>Delivery</MenuItem>
+				<MenuItem onClick={handleClose}>Devoluciones</MenuItem>
+				<Divider />
+				<MenuItem onClick={handleClose}>Cerrar sesion</MenuItem>
 			</StyledMenu>
 		</>
 	);

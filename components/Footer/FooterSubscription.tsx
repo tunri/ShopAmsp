@@ -8,36 +8,33 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
-import { SOCIAL_NETWORKS } from "../../@data/SocialNetwork";
-import LinkSocialNetwork from "../LinkSocialNetwork";
 import Grid from "@mui/material/Grid";
+import LinkSocialNetwork from "../LinkSocialNetwork";
+import MenuLanguages from "../MenuLanguages";
 
-const BoxStyled = styled(Box)(({ theme }) => ({
-	paddingTop: theme.spacing(4),
-	paddingBottom: theme.spacing(4),
-	backgroundColor: "#f1f1f1",
-	[theme.breakpoints.up("md")]: {
-		paddingTop: theme.spacing(6),
-		paddingBottom: theme.spacing(6),
-	},
-	[theme.breakpoints.up("lg")]: {
-		paddingTop: theme.spacing(7),
-		paddingBottom: theme.spacing(7),
-	},
+import { SOCIAL_NETWORKS } from "../../@data/SocialNetwork";
+import { BoxPaddY } from "../../components-styled/BoxStyled";
+
+const BoxLeftStyled = styled(Box)(() => ({
+	maxWidth: 600,
 }));
 
-const BoxLeftStyled = styled(Box)(({ theme }) => ({
+const BoxRightStyled = styled(Box)(({ theme }) => ({
+	maxWidth: 600,
+	[theme.breakpoints.up("md")]: {
+		paddingLeft: "4rem",
+	},
 	[theme.breakpoints.up("lg")]: {
-		maxWidth: 600,
+		paddingLeft: "8rem",
 	},
 }));
 
 const FooterSubscription = () => {
 	return (
-		<BoxStyled>
+		<BoxPaddY sx={{ backgroundColor: "#f1f1f1" }}>
 			<Container maxWidth="lg">
 				<Grid container spacing={2}>
-					<Grid item xs={12} md={6} lg={8}>
+					<Grid item xs={12} md={6}>
 						<BoxLeftStyled>
 							<Typography
 								variant="subtitle1"
@@ -58,18 +55,18 @@ const FooterSubscription = () => {
 							</Typography>
 							<Box mb={3}>
 								<Grid container spacing={2}>
-									<Grid item xs={12} sm={8}>
+									<Grid item xs={8}>
 										<TextField
 											sx={{
 												backgroundColor: "#fff",
 											}}
 											fullWidth
-											id="email"
-											name="email"
+											id="userEmail"
+											name="userEmail"
 											label="tu@email.com"
 										/>
 									</Grid>
-									<Grid item xs={12} sm>
+									<Grid item xs>
 										<Button
 											fullWidth
 											variant="contained"
@@ -84,11 +81,11 @@ const FooterSubscription = () => {
 							<Box>
 								<Divider textAlign="left" sx={{ mb: 1 }}>
 									<Typography
-										variant="body2"
+										variant="caption"
 										component="span"
-										color="#444"
+										color="#888"
 									>
-										Síguenos en
+										SIGUENOS EN
 									</Typography>
 								</Divider>
 
@@ -107,32 +104,51 @@ const FooterSubscription = () => {
 							</Box>
 						</BoxLeftStyled>
 					</Grid>
-					<Grid item xs={12} md={6} lg={4}>
-						<Box>
-							<Typography
-								variant="subtitle1"
-								sx={{ fontWeight: 500 }}
-							>
-								Comunícate con nosotros
-							</Typography>
-							<Box>
-								<Stack direction="row" spacing={1}>
-									<Typography variant="body1" color="#777">
-										+51 925667668
-									</Typography>
+					<Grid item xs={12} md={6}>
+						<BoxRightStyled>
+							<Box mb={3}>
+								<Typography
+									variant="subtitle1"
+									sx={{ fontWeight: 500, mb: 1 }}
+								>
+									COMUNICATE CON NOSOTROS
+								</Typography>
+								<Box>
+									<Stack direction="row" spacing={1}>
+										<Typography
+											variant="body1"
+											color="#777"
+										>
+											+51 925667668
+										</Typography>
 
-									<Divider orientation="vertical" />
+										<Divider orientation="vertical" />
 
-									<Typography variant="body1" color="#777">
-										customer@email.pe
-									</Typography>
-								</Stack>
+										<Typography
+											variant="body1"
+											color="#777"
+										>
+											customer@email.pe
+										</Typography>
+									</Stack>
+								</Box>
 							</Box>
-						</Box>
+							<Box>
+								<Typography
+									variant="subtitle1"
+									sx={{ fontWeight: 500, mb: 1 }}
+								>
+									UBICACION Y LENGUAJE
+								</Typography>
+								<Box>
+									<MenuLanguages sxColorLabel="#777" />
+								</Box>
+							</Box>
+						</BoxRightStyled>
 					</Grid>
 				</Grid>
 			</Container>
-		</BoxStyled>
+		</BoxPaddY>
 	);
 };
 

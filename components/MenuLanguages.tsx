@@ -9,7 +9,11 @@ const LANGUAGES = [
 	{ id: 2, text: "Spanish" },
 ];
 
-const MenuLanguages = () => {
+interface Props {
+	sxColorLabel?: string;
+}
+
+const MenuLanguages = ({ sxColorLabel }: Props = { sxColorLabel: "black" }) => {
 	const [openMenu, setOpenMenu] = useState<boolean>(false);
 
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -27,7 +31,9 @@ const MenuLanguages = () => {
 				aria-haspopup="true"
 				aria-expanded={openMenu ? "true" : undefined}
 				onClick={handleClick}
-				sx={{ color: "common.white" }}
+				sx={{
+					color: sxColorLabel,
+				}}
 			>
 				English
 			</Button>

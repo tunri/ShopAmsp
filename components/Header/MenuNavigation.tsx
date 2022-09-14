@@ -2,58 +2,42 @@ import React from "react";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import Link from "@mui/material/Link";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import DataMenuNavigation from "../../@data/MenuNavigations";
 
-interface IMenuItem {
-	key: string;
-	text: string;
-}
+type Props = {
+	onClickLink: Function;
+};
 
-const dataMenu: IMenuItem[] = [
-	{
-		key: "design",
-		text: "Diseñadores",
-	},
-	{
-		key: "prendesDeVestir",
-		text: "Prendas de Vestir",
-	},
-	{
-		key: "carterasAccesorios",
-		text: "Carteras y accesorios",
-	},
-	{
-		key: "zapatos",
-		text: "Zapatos",
-	},
-	{
-		key: "joyeria",
-		text: "Joyeria",
-	},
-	{
-		key: "ofertas",
-		text: "Ofertas",
-	},
-];
-
-const MenuNavigation = () => {
+const MenuNavigation = ({ onClickLink }: Props) => {
 	return (
-		<Toolbar
-			sx={{
-				flexWrap: "wrap",
-				alignItems: "center",
-				justifyContent: "center",
-			}}
-		>
-			{dataMenu.length > 0 ? (
-				<Stack component="nav" direction="row" spacing={3}>
-					{dataMenu.map((item) => (
-						<Link key={item.key} sx={{ color: "common.white" }}>
-							{item.text}
-						</Link>
-					))}
-				</Stack>
-			) : null}
-		</Toolbar>
+		<>
+			<Toolbar
+				sx={{
+					flexWrap: "wrap",
+					alignItems: "center",
+					justifyContent: "center",
+				}}
+			>
+				{DataMenuNavigation.length > 0 ? (
+					<Stack component="nav" direction="row" spacing={3}>
+						{DataMenuNavigation.map((item) => (
+							<Link
+								key={item.key}
+								onClick={(ev) => onClickLink(item, ev)}
+								sx={{
+									color: "common.white",
+									cursor: "pointer",
+								}}
+							>
+								{item.text}
+							</Link>
+						))}
+					</Stack>
+				) : null}
+			</Toolbar>
+		</>
 	);
 };
 

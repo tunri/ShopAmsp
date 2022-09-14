@@ -5,9 +5,7 @@ import AppBar from "@mui/material/AppBar";
 import Tooltip from "@mui/material/Tooltip";
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import PersonIcon from "@mui/icons-material/Person";
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
@@ -15,15 +13,27 @@ import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 
 import MenuLanguages from "../MenuLanguages";
 import MenuNavigation from "./MenuNavigation";
+import { IMenuNavigation } from "../../@data/MenuNavigations";
+import PopoverNavigation from "./PopoverNavigation/PopoverNavigation";
 
 // assets
 import Logo from "../../public/images/logo.png";
 import UserProfileMenu from "./UserProfileMenu";
+import { useState } from "react";
+
+
 
 const Header = () => {
+	const [selectedLink, setSelectedLink] = useState<IMenuNavigation | null>(
+		null
+	);
+	const handleClickLink = (item: IMenuNavigation, ev: any) => {
+		setSelectedLink(item);
+	};
+
 	return (
 		<AppBar
-			position="static"
+			position="relative"
 			elevation={0}
 			sx={{
 				backgroundColor: "#000",
@@ -38,17 +48,21 @@ const Header = () => {
 				}}
 			>
 				<Box>
-					<MenuLanguages />
+					<MenuLanguages sxColorLabel="white" />
 				</Box>
 				<Box
 					sx={{
 						maxWidth: 140,
 					}}
 				>
-					<Image
-						src={Logo}
-						alt="Asociación de Moda Sostenible del Perú"
-					/>
+					<NextLink href="/" passHref>
+						<Box component="a" sx={{ display: "block" }}>
+							<Image
+								src={Logo}
+								alt="Asociación de Moda Sostenible del Perú"
+							></Image>
+						</Box>
+					</NextLink>
 				</Box>
 				<Stack direction="row" spacing={3}>
 					<IconButton
@@ -79,7 +93,9 @@ const Header = () => {
 				</Stack>
 			</Toolbar>
 
-			<MenuNavigation />
+			<MenuNavigation onClickLink={handleClickLink} />
+
+			{selectedLink ? <PopoverNavigation item={selectedLink} /> : null}
 		</AppBar>
 	);
 };
