@@ -17,7 +17,10 @@ const ActivateUser = () => {
 			setLoading(true);
 			const slug = (router.query.slug as string[]) || [];
 			const [uid, token] = slug;
-			const payload = { uid, token };
+			const payload = {
+				uid: "Ng",
+				token: "bbrhlk-63ce3e64412788ce868aeeb78dc27546",
+			};
 			const response = await http.post(
 				"/auth/users/activation/",
 				payload

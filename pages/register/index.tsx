@@ -1,37 +1,55 @@
 import type { NextPage } from "next";
-import NextLink from "next/link";
-import { useFormik } from "formik";
 import * as yup from "yup";
-import http from "../helpers/http";
-import { useRouter } from 'next/router'
+import { useFormik } from "formik";
+import { useSnackbar } from "notistack";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import http from "../../helpers/http";
+import dayjs from "dayjs";
+import "dayjs/locale/es";
 
+// components
+import NextLink from "next/link";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import "dayjs/locale/es";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { useSnackbar } from "notistack";
+import ButtonLoading from "../../components/ButtonLoading";
+import InputAdornment from "@mui/material/InputAdornment";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import IconButton from "@mui/material/IconButton";
 
-import { IFormRegister, INewUserRequest } from "../models/authenticate";
-import { mapToNewUserRequest } from "../mappers/authenticate";
-import { useState } from "react";
-import ButtonLoading from "../components/ButtonLoading";
-import dayjs from "dayjs";
+// utils
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { IFormRegister, INewUserRequest } from "../../models/authenticate";
+import { mapToNewUserRequest } from "../../mappers/authenticate";
+import ListErrors from "../../components/ListErrors/ListErrors";
 
 const messageRequired = "Campo requerido";
-
 const validationSchema: yup.SchemaOf<IFormRegister> = yup.object({
-	email: yup.string().email("Ingrese email valido").required(messageRequired),
-	password: yup.string().required(messageRequired),
-	firstName: yup.string().required(messageRequired),
-	lastName: yup.string().required(messageRequired),
+	email: yup
+		.string()
+		.email("Ingrese un correo válido")
+		.required(messageRequired),
+	password: yup
+		.string()
+		.required("Campo requerido")
+		.max(50, "La campo debe tener máximo ${max} caracteres"),
+	firstName: yup
+		.string()
+		.required("Campo requerido")
+		.max(50, "El campo debe tener máximo ${max} caracteres"),
+	lastName: yup
+		.string()
+		.required("Campo requerido")
+		.max(50, "El campo debe tener máximo ${max} caracteres"),
 	isSubscription: yup.boolean(),
 	dayOfBirth: yup.object().required(messageRequired),
 	phoneNumber: yup.string().required(messageRequired),
@@ -49,7 +67,9 @@ const initialState: IFormRegister = {
 
 const RegisterPage: NextPage = () => {
 	const router = useRouter();
+	const [showPassword, setShowPassword] = useState(false);
 	const [loading, setLoading] = useState(false);
+	const [errors, setErrors] = useState<string[]>([]);
 	const { enqueueSnackbar } = useSnackbar();
 
 	const formik = useFormik<IFormRegister>({
@@ -76,16 +96,9 @@ const RegisterPage: NextPage = () => {
 					vertical: "top",
 				},
 			});
-			router.push('/login');
+			router.push("/login");
 		} catch (error) {
-			enqueueSnackbar("Ha ocurrido un error, inténtelo en otro momento!", {
-				variant: "error",
-				autoHideDuration: 4000,
-				anchorOrigin: {
-					horizontal: "center",
-					vertical: "top",
-				},
-			});
+			setErrors(["Oops, ha ocurrido un problema!"]);
 		} finally {
 			setLoading(false);
 		}
@@ -94,37 +107,44 @@ const RegisterPage: NextPage = () => {
 	return (
 		<Box py={4}>
 			<Container sx={{ my: 8 }} maxWidth="xs">
+				<ListErrors
+					sx={{ mb: 3 }}
+					errors={errors}
+					onClose={() => setErrors([])}
+				></ListErrors>
+
 				<Typography variant="h4" mb={3}>
 					Crear cuenta
 				</Typography>
 				<Box component="form" onSubmit={formik.handleSubmit}>
-					<Box mb={3}>
+					<Box mb={1}>
 						<TextField
+							variant="filled"
 							fullWidth
 							id="email"
 							name="email"
-							label="Email"
+							label="Email*"
 							value={formik.values.email}
-							required
 							onChange={formik.handleChange}
 							error={
 								formik.touched.email &&
 								Boolean(formik.errors.email)
 							}
 							helperText={
-								formik.touched.email && formik.errors.email
+								(formik.touched.email && formik.errors.email) ||
+								" "
 							}
 						/>
 					</Box>
 
-					<Box mb={3}>
+					<Box mb={1}>
 						<TextField
+							variant="filled"
 							fullWidth
 							id="password"
 							name="password"
 							label="Contraseña"
-							type="password"
-							required
+							type={showPassword ? "text" : "password"}
 							value={formik.values.password}
 							onChange={formik.handleChange}
 							error={
@@ -132,19 +152,39 @@ const RegisterPage: NextPage = () => {
 								Boolean(formik.errors.password)
 							}
 							helperText={
-								formik.touched.password &&
-								formik.errors.password
+								(formik.touched.password &&
+									formik.errors.password) ||
+								" "
 							}
+							InputProps={{
+								endAdornment: (
+									<InputAdornment position="end">
+										<IconButton
+											aria-label="toggle password visibility"
+											edge="end"
+											onClick={() =>
+												setShowPassword(!showPassword)
+											}
+										>
+											{showPassword ? (
+												<VisibilityOff />
+											) : (
+												<Visibility />
+											)}
+										</IconButton>
+									</InputAdornment>
+								),
+							}}
 						/>
 					</Box>
 
-					<Box mb={3}>
+					<Box mb={1}>
 						<TextField
+							variant="filled"
 							fullWidth
 							id="firstName"
 							name="firstName"
 							label="Nombres"
-							required
 							value={formik.values.firstName}
 							onChange={formik.handleChange}
 							error={
@@ -152,19 +192,20 @@ const RegisterPage: NextPage = () => {
 								Boolean(formik.errors.firstName)
 							}
 							helperText={
-								formik.touched.firstName &&
-								formik.errors.firstName
+								(formik.touched.firstName &&
+									formik.errors.firstName) ||
+								" "
 							}
 						/>
 					</Box>
 
-					<Box mb={3}>
+					<Box mb={1}>
 						<TextField
+							variant="filled"
 							fullWidth
 							id="lastName"
 							name="lastName"
 							label="Apellidos"
-							required
 							value={formik.values.lastName}
 							onChange={formik.handleChange}
 							error={
@@ -172,19 +213,20 @@ const RegisterPage: NextPage = () => {
 								Boolean(formik.errors.lastName)
 							}
 							helperText={
-								formik.touched.lastName &&
-								formik.errors.lastName
+								(formik.touched.lastName &&
+									formik.errors.lastName) ||
+								" "
 							}
 						/>
 					</Box>
 
-					<Box mb={3}>
+					<Box mb={1}>
 						<TextField
+							variant="filled"
 							fullWidth
 							id="phoneNumber"
 							name="phoneNumber"
 							label="Teléfono"
-							required
 							value={formik.values.phoneNumber}
 							onChange={formik.handleChange}
 							error={
@@ -192,13 +234,14 @@ const RegisterPage: NextPage = () => {
 								Boolean(formik.errors.phoneNumber)
 							}
 							helperText={
-								formik.touched.phoneNumber &&
-								formik.errors.phoneNumber
+								(formik.touched.phoneNumber &&
+									formik.errors.phoneNumber) ||
+								" "
 							}
 						/>
 					</Box>
 
-					<Box mb={3}>
+					<Box mb={1}>
 						<LocalizationProvider
 							adapterLocale="es"
 							dateAdapter={AdapterDayjs}
@@ -211,11 +254,11 @@ const RegisterPage: NextPage = () => {
 								}
 								renderInput={(params: any) => (
 									<TextField
+										variant="filled"
 										fullWidth
 										{...params}
 										id="dayOfBirth"
 										name="dayOfBirth"
-										required
 										label="Fecha de Nacimiento"
 										error={false}
 									/>

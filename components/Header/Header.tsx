@@ -89,13 +89,13 @@ const Header = () => {
 						</Tooltip>
 					</NextLink>
 
-					<UserProfileMenu />
+					{/* <UserProfileMenu /> */}
 				</Stack>
 			</Toolbar>
 
 			<MenuNavigation onClickLink={handleClickLink} />
 
-			{selectedLink ? <PopoverNavigation item={selectedLink} /> : null}
+			{/* {selectedLink ? <PopoverNavigation item={selectedLink} /> : null} */}
 		</AppBar>
 	);
 };
