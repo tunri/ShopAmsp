@@ -1,16 +1,23 @@
-import React from "react";
+import React, { MouseEventHandler } from "react";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import DataMenuNavigation from "../../@data/MenuNavigations";
+import DataMenuNavigation, {
+	IMenuNavigation,
+} from "../../@data/MenuNavigations";
 
 type Props = {
-	onClickLink: Function;
+	onMouseEnter: MouseEventHandler;
+	onMouseLeave: MouseEventHandler;
+	onMouseEnterLink: (item: IMenuNavigation) => void;
 };
 
-const MenuNavigation = ({ onClickLink }: Props) => {
+const MenuNavigation = ({
+	onMouseEnter,
+	onMouseLeave,
+	onMouseEnterLink,
+}: Props) => {
 	return (
 		<>
 			<Toolbar
@@ -20,22 +27,28 @@ const MenuNavigation = ({ onClickLink }: Props) => {
 					justifyContent: "center",
 				}}
 			>
-				{DataMenuNavigation.length > 0 ? (
-					<Stack component="nav" direction="row" spacing={3}>
-						{DataMenuNavigation.map((item) => (
-							<Link
-								key={item.key}
-								onClick={(ev) => onClickLink(item, ev)}
-								sx={{
-									color: "common.white",
-									cursor: "pointer",
-								}}
-							>
-								{item.text}
-							</Link>
-						))}
-					</Stack>
-				) : null}
+				<Box onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+					{DataMenuNavigation.length > 0 ? (
+						<Stack component="nav" direction="row">
+							{DataMenuNavigation.map((item) => (
+								<Link
+									onMouseEnter={() => onMouseEnterLink(item)}
+									minHeight="64px"
+									lineHeight="64px"
+									key={item.key}
+									sx={{
+										color: "common.white",
+										cursor: "pointer",
+										paddingLeft: "24px",
+										paddingRight: "24px",
+									}}
+								>
+									{item.text}
+								</Link>
+							))}
+						</Stack>
+					) : null}
+				</Box>
 			</Toolbar>
 		</>
 	);

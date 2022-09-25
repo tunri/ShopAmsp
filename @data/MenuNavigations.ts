@@ -1,55 +1,58 @@
-type NavLink = {
+export type NavLink = {
 	text: string;
 	// key: string;
 };
 
-type NavSection = {
-	text: string;
+export type INavSection = {
+	title: string;
 	// key: string;
 	links: NavLink[];
-};
-
-type NavCategory = {
-	text: string;
-	// key: string;
-	sections: NavSection[];
 };
 
 export type IMenuNavigation = {
 	text: string;
 	key: string;
-	categories: NavCategory[];
+	mens?: INavSection[];
+	women?: INavSection[];
 };
 
 const DataMenuNavigation: IMenuNavigation[] = [
 	{
 		text: "Design",
 		key: "design",
-		categories: [
+		mens: [
 			{
-				text: "Hombres",
-				sections: [
-					{
-						text: "Diseñadores destacados",
-						links: [],
-					},
-					{
-						text: "Descubra diseñadores",
-						links: [],
-					},
+				title: "Diseñadores destacados",
+				links: [
+					{ text: "Pedro" },
+					{ text: "Juan" },
+					{ text: "Erick" },
 				],
 			},
 			{
-				text: "Mujeres",
-				sections: [
-					{
-						text: "Diseñadores destacados",
-						links: [],
-					},
-					{
-						text: "Descubra diseñadores",
-						links: [],
-					},
+				title: "Descubra diseñadores",
+				links: [
+					{ text: "Martin" },
+					{ text: "Owen" },
+					{ text: "Marcus" },
+				],
+			},
+		],
+		women: [
+			{
+				title: "Diseñadores destacados",
+				links: [
+					{ text: "Leticia" },
+					{ text: "Rosas" },
+					{ text: "Romina" },
+				],
+			},
+			{
+				title: "Descubra diseñadores",
+				links: [
+					{ text: "Khatie" },
+					{ text: "Loewe" },
+					{ text: "Alaia" },
 				],
 			},
 		],
@@ -57,27 +60,22 @@ const DataMenuNavigation: IMenuNavigation[] = [
 	{
 		text: "Prendas de Vestir",
 		key: "clothing",
-		categories: [],
 	},
 	{
 		text: "Carteras & Accesorios",
 		key: "handbagsAccessories",
-		categories: [],
 	},
 	{
 		text: "Zapatos",
 		key: "shoes",
-		categories: [],
 	},
 	{
 		text: "joyerías",
 		key: "jewelries",
-		categories: [],
 	},
 	{
 		text: "Ofertas",
 		key: "offers",
-		categories: [],
 	},
 ];
 

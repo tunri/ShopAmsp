@@ -1,3 +1,4 @@
+
 export type IFormRegister = {
     email           : string;
     password        : string;
@@ -6,8 +7,9 @@ export type IFormRegister = {
     phoneNumber     : string;
     dayOfBirth      : any;
     isSubscription? : boolean;
+	recaptcha		: string;
 };
 
-export type INewUserRequest = IFormRegister & {
+export type INewUserRequest = Omit<IFormRegister, 'recaptcha'> & {
     rePassword      : string;
 };

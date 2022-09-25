@@ -13,7 +13,9 @@ import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 
 import MenuLanguages from "../MenuLanguages";
 import MenuNavigation from "./MenuNavigation";
-import { IMenuNavigation } from "../../@data/MenuNavigations";
+import DataMenuNavigation, {
+	IMenuNavigation,
+} from "../../@data/MenuNavigations";
 import PopoverNavigation from "./PopoverNavigation/PopoverNavigation";
 
 // assets
@@ -21,14 +23,12 @@ import Logo from "../../public/images/logo.png";
 import UserProfileMenu from "./UserProfileMenu";
 import { useState } from "react";
 
-
-
 const Header = () => {
-	const [selectedLink, setSelectedLink] = useState<IMenuNavigation | null>(
-		null
-	);
-	const handleClickLink = (item: IMenuNavigation, ev: any) => {
-		setSelectedLink(item);
+	const [openMenu, setOpenMenu] = useState<boolean>(false);
+	const [hoverItem, setHoverItem] = useState<IMenuNavigation | null>(null);
+
+	const onHoverMenuItem = (event: any) => {
+		setOpenMenu(true);
 	};
 
 	return (
@@ -93,9 +93,25 @@ const Header = () => {
 				</Stack>
 			</Toolbar>
 
-			<MenuNavigation onClickLink={handleClickLink} />
+			{/* Block menu navigation */}
+			<MenuNavigation
+				onMouseEnter={onHoverMenuItem}
+				onMouseLeave={() => {
+					setOpenMenu(false);
+				}}
+				onMouseEnterLink={(item) => setHoverItem(item)}
+			/>
 
-			{/* {selectedLink ? <PopoverNavigation item={selectedLink} /> : null} */}
+			{/* Popover Submenu items navigation */}
+			{openMenu ? (
+				<PopoverNavigation
+					item={hoverItem}
+					onMouseEnter={onHoverMenuItem}
+					onMouseLeave={() => {
+						setOpenMenu(false);
+					}}
+				/>
+			) : null}
 		</AppBar>
 	);
 };
