@@ -5,6 +5,7 @@ import Menu, { MenuProps } from "@mui/material/Menu";
 import Divider from "@mui/material/Divider";
 import MenuItem from "@mui/material/MenuItem";
 import PersonIcon from "@mui/icons-material/Person";
+import { useRouter } from "next/router";
 
 const StyledMenu = styled((props: MenuProps) => (
 	<Menu
@@ -51,6 +52,7 @@ const StyledMenu = styled((props: MenuProps) => (
 }));
 
 const UserProfileMenu = () => {
+	const router = useRouter();
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -58,6 +60,12 @@ const UserProfileMenu = () => {
 	};
 	const handleClose = () => {
 		setAnchorEl(null);
+	};
+
+	const handleLogout = () => {
+		window.localStorage.removeItem("token");
+		setAnchorEl(null);
+		router.push("/login");
 	};
 
 	return (
@@ -82,15 +90,15 @@ const UserProfileMenu = () => {
 					"aria-labelledby": "basic-button",
 				}}
 			>
-				<MenuItem>Jerson Victor</MenuItem>
-				<Divider />
+				{/* <MenuItem>Jerson Victor</MenuItem> */}
+				{/* <Divider /> */}
 				<MenuItem onClick={handleClose}>Profile</MenuItem>
 				<MenuItem onClick={handleClose}>Mis ordenes</MenuItem>
 				<MenuItem onClick={handleClose}>Gestionar direcciones</MenuItem>
 				<MenuItem onClick={handleClose}>Delivery</MenuItem>
 				<MenuItem onClick={handleClose}>Devoluciones</MenuItem>
 				<Divider />
-				<MenuItem onClick={handleClose}>Cerrar sesion</MenuItem>
+				<MenuItem onClick={handleLogout}>Cerrar sesion</MenuItem>
 			</StyledMenu>
 		</>
 	);

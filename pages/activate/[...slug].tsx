@@ -32,9 +32,9 @@ const ActivateUser = () => {
 		}
 	};
 
-	useEffect(() => {
-		makeActivate();
-	}, []);
+	// useEffect(() => {
+	// 	makeActivate();
+	// }, []);
 
 	return (
 		<Box py={10}>

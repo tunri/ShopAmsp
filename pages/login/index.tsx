@@ -8,17 +8,15 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import { useFormik } from "formik";
+import { useRouter } from "next/router";
 
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import http from "../../helpers/http";
-import IconButton from "@mui/material/IconButton";
 import ButtonLoading from "../../components/ButtonLoading";
-import InputAdornment from "@mui/material/InputAdornment";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import ListErrors from "../../components/ListErrors/ListErrors";
+import FormControlPassword from "../../components/forms/FormControlPassword";
 
 const validationSchema = yup.object({
 	email: yup
@@ -32,11 +30,17 @@ const validationSchema = yup.object({
 });
 
 const Login: NextPage = () => {
-	const [showPassword, setShowPassword] = useState(false);
+	const router = useRouter();
 	const [errors, setErrors] = useState<string[]>([]);
 	const { enqueueSnackbar } = useSnackbar();
 	const [loading, setLoading] = useState(false);
-	const formik = useFormik({
+	const {
+		values,
+		errors: errorsForm,
+		touched,
+		handleChange,
+		handleSubmit,
+	} = useFormik({
 		initialValues: {
 			email: "",
 			password: "",
@@ -50,7 +54,10 @@ const Login: NextPage = () => {
 	const handleLogin = async (payload: any) => {
 		try {
 			setLoading(true);
-			await http.post("/auth/jwt/create", payload);
+			const { data, status } = await http.post(
+				"/auth/jwt/create",
+				payload
+			);
 			enqueueSnackbar("Ha iniciado sesión!", {
 				variant: "success",
 				autoHideDuration: 4000,
@@ -59,6 +66,12 @@ const Login: NextPage = () => {
 					vertical: "top",
 				},
 			});
+			router.push("/catalogue");
+			if (status === 200) {
+				const { access, refresh } = data;
+				window.localStorage.setItem("token", access);
+				router.push("/catalogue");
+			}
 		} catch (error) {
 			setErrors(["Oops, ha ocurrido un problema!"]);
 		} finally {
@@ -69,7 +82,6 @@ const Login: NextPage = () => {
 	return (
 		<Box py={4}>
 			<Container sx={{ my: 8 }} maxWidth="xs">
-
 				<ListErrors
 					sx={{ mb: 3 }}
 					errors={errors}
@@ -79,7 +91,7 @@ const Login: NextPage = () => {
 				<Typography variant="h4" mb={3}>
 					Iniciar sesión
 				</Typography>
-				<Box component="form" onSubmit={formik.handleSubmit}>
+				<Box component="form" onSubmit={handleSubmit}>
 					<Box mb={2}>
 						<Box mb={1}>
 							<TextField
@@ -88,60 +100,33 @@ const Login: NextPage = () => {
 								id="email"
 								name="email"
 								label="Email*"
-								value={formik.values.email}
-								onChange={formik.handleChange}
+								value={values.email}
+								onChange={handleChange}
 								error={
-									formik.touched.email &&
-									Boolean(formik.errors.email)
+									touched.email && Boolean(errorsForm.email)
 								}
 								helperText={
-									(formik.touched.email &&
-										formik.errors.email) ||
-									" "
+									(touched.email && errorsForm.email) || " "
 								}
 							/>
 						</Box>
 
 						<Box>
-							<TextField
-								variant="filled"
+							<FormControlPassword
 								fullWidth
 								id="password"
 								name="password"
-								type={showPassword ? "text" : "password"}
 								label="Contraseña*"
-								value={formik.values.password}
-								onChange={formik.handleChange}
+								value={values.password}
+								onChange={handleChange}
 								error={
-									formik.touched.password &&
-									Boolean(formik.errors.password)
+									touched.password &&
+									Boolean(errorsForm.password)
 								}
 								helperText={
-									(formik.touched.password &&
-										formik.errors.password) ||
+									(touched.password && errorsForm.password) ||
 									" "
 								}
-								InputProps={{
-									endAdornment: (
-										<InputAdornment position="end">
-											<IconButton
-												aria-label="toggle password visibility"
-												edge="end"
-												onClick={() =>
-													setShowPassword(
-														!showPassword
-													)
-												}
-											>
-												{showPassword ? (
-													<VisibilityOff />
-												) : (
-													<Visibility />
-												)}
-											</IconButton>
-										</InputAdornment>
-									),
-								}}
 							/>
 						</Box>
 					</Box>

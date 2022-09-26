@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useSnackbar } from "notistack";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import http from "../../helpers/http";
 import dayjs from "dayjs";
@@ -22,15 +22,10 @@ import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import ButtonLoading from "../../components/ButtonLoading";
-import InputAdornment from "@mui/material/InputAdornment";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import IconButton from "@mui/material/IconButton";
+import FormControlPassword from "../../components/forms/FormControlPassword";
+import FormControlDatePicker from "../../components/forms/FormControlDatePicker";
 
 // utils
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { IFormRegister, INewUserRequest } from "../../models/authenticate";
 import { mapToNewUserRequest } from "../../mappers/authenticate";
 import ListErrors from "../../components/ListErrors/ListErrors";
@@ -56,7 +51,7 @@ const validationSchema: yup.SchemaOf<IFormRegister> = yup.object({
 	isSubscription: yup.boolean(),
 	dayOfBirth: yup.object().required(messageRequired),
 	phoneNumber: yup.string().required(messageRequired),
-	recaptcha: yup.string().required(),
+	recaptcha: yup.string(),
 });
 
 const initialState: IFormRegister = {
@@ -72,12 +67,18 @@ const initialState: IFormRegister = {
 
 const RegisterPage: NextPage = () => {
 	const router = useRouter();
-	const [showPassword, setShowPassword] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [errors, setErrors] = useState<string[]>([]);
 	const { enqueueSnackbar } = useSnackbar();
 
-	const formik = useFormik<IFormRegister>({
+	const {
+		values,
+		touched,
+		errors: errorsForm,
+		setFieldValue,
+		handleSubmit,
+		handleChange,
+	} = useFormik<IFormRegister>({
 		initialValues: initialState,
 		validationSchema: validationSchema,
 		onSubmit: (values) => {
@@ -95,7 +96,7 @@ const RegisterPage: NextPage = () => {
 			await http.post("/auth/users/", payload);
 			enqueueSnackbar("Usuario registrado, revise su correo!", {
 				variant: "success",
-				autoHideDuration: 2000,
+				autoHideDuration: 4000,
 				anchorOrigin: {
 					horizontal: "center",
 					vertical: "top",
@@ -130,7 +131,7 @@ const RegisterPage: NextPage = () => {
 					<Typography variant="h4" mb={3}>
 						Crear cuenta
 					</Typography>
-					<Box component="form" onSubmit={formik.handleSubmit}>
+					<Box component="form" onSubmit={handleSubmit}>
 						<Box mb={1}>
 							<TextField
 								variant="filled"
@@ -138,60 +139,33 @@ const RegisterPage: NextPage = () => {
 								id="email"
 								name="email"
 								label="Email*"
-								value={formik.values.email}
-								onChange={formik.handleChange}
+								value={values.email}
+								onChange={handleChange}
 								error={
-									formik.touched.email &&
-									Boolean(formik.errors.email)
+									touched.email && Boolean(errorsForm.email)
 								}
 								helperText={
-									(formik.touched.email &&
-										formik.errors.email) ||
-									" "
+									(touched.email && errorsForm.email) || " "
 								}
 							/>
 						</Box>
 
 						<Box mb={1}>
-							<TextField
-								variant="filled"
+							<FormControlPassword
 								fullWidth
 								id="password"
 								name="password"
 								label="Contraseña*"
-								type={showPassword ? "text" : "password"}
-								value={formik.values.password}
-								onChange={formik.handleChange}
+								value={values.password}
+								onChange={handleChange}
 								error={
-									formik.touched.password &&
-									Boolean(formik.errors.password)
+									touched.password &&
+									Boolean(errorsForm.password)
 								}
 								helperText={
-									(formik.touched.password &&
-										formik.errors.password) ||
+									(touched.password && errorsForm.password) ||
 									" "
 								}
-								InputProps={{
-									endAdornment: (
-										<InputAdornment position="end">
-											<IconButton
-												aria-label="toggle password visibility"
-												edge="end"
-												onClick={() =>
-													setShowPassword(
-														!showPassword
-													)
-												}
-											>
-												{showPassword ? (
-													<VisibilityOff />
-												) : (
-													<Visibility />
-												)}
-											</IconButton>
-										</InputAdornment>
-									),
-								}}
 							/>
 						</Box>
 
@@ -202,15 +176,15 @@ const RegisterPage: NextPage = () => {
 								id="firstName"
 								name="firstName"
 								label="Nombres*"
-								value={formik.values.firstName}
-								onChange={formik.handleChange}
+								value={values.firstName}
+								onChange={handleChange}
 								error={
-									formik.touched.firstName &&
-									Boolean(formik.errors.firstName)
+									touched.firstName &&
+									Boolean(errorsForm.firstName)
 								}
 								helperText={
-									(formik.touched.firstName &&
-										formik.errors.firstName) ||
+									(touched.firstName &&
+										errorsForm.firstName) ||
 									" "
 								}
 							/>
@@ -223,15 +197,14 @@ const RegisterPage: NextPage = () => {
 								id="lastName"
 								name="lastName"
 								label="Apellidos*"
-								value={formik.values.lastName}
-								onChange={formik.handleChange}
+								value={values.lastName}
+								onChange={handleChange}
 								error={
-									formik.touched.lastName &&
-									Boolean(formik.errors.lastName)
+									touched.lastName &&
+									Boolean(errorsForm.lastName)
 								}
 								helperText={
-									(formik.touched.lastName &&
-										formik.errors.lastName) ||
+									(touched.lastName && errorsForm.lastName) ||
 									" "
 								}
 							/>
@@ -244,57 +217,40 @@ const RegisterPage: NextPage = () => {
 								id="phoneNumber"
 								name="phoneNumber"
 								label="Teléfono*"
-								value={formik.values.phoneNumber}
-								onChange={formik.handleChange}
+								value={values.phoneNumber}
+								onChange={handleChange}
 								error={
-									formik.touched.phoneNumber &&
-									Boolean(formik.errors.phoneNumber)
+									touched.phoneNumber &&
+									Boolean(errorsForm.phoneNumber)
 								}
 								helperText={
-									(formik.touched.phoneNumber &&
-										formik.errors.phoneNumber) ||
+									(touched.phoneNumber &&
+										errorsForm.phoneNumber) ||
 									" "
 								}
 							/>
 						</Box>
 
 						<Box mb={1}>
-							<LocalizationProvider
-								adapterLocale="es"
-								dateAdapter={AdapterDayjs}
-							>
-								<DatePicker
-									inputFormat="DD/MM/YYYY"
-									value={formik.values.dayOfBirth}
-									onChange={(value) =>
-										formik.setFieldValue(
-											"dayOfBirth",
-											value
-										)
-									}
-									renderInput={(params: any) => (
-										<TextField
-											variant="filled"
-											fullWidth
-											{...params}
-											id="dayOfBirth"
-											name="dayOfBirth"
-											label="Fecha de Nacimiento*"
-											error={
-												formik.touched.dayOfBirth &&
-												Boolean(
-													formik.errors.dayOfBirth
-												)
-											}
-											helperText={
-												(formik.touched.dayOfBirth &&
-													formik.errors.dayOfBirth) ||
-												" "
-											}
-										/>
-									)}
-								/>
-							</LocalizationProvider>
+							<FormControlDatePicker
+								valueDatePicker={values.dayOfBirth}
+								onChangeDatePicker={(value) =>
+									setFieldValue("dayOfBirth", value)
+								}
+								fullWidth
+								id="dayOfBirth"
+								name="dayOfBirth"
+								label="Fecha de Nacimiento*"
+								error={
+									touched.dayOfBirth &&
+									Boolean(errorsForm.dayOfBirth)
+								}
+								helperTextDatePicker={
+									(touched.dayOfBirth &&
+										errorsForm.dayOfBirth) ||
+									" "
+								}
+							/>
 						</Box>
 
 						<Box mb={2}>
@@ -303,8 +259,8 @@ const RegisterPage: NextPage = () => {
 								name="isSubscription"
 								control={
 									<Checkbox
-										checked={formik.values.isSubscription}
-										onChange={formik.handleChange}
+										checked={values.isSubscription}
+										onChange={handleChange}
 										color="primary"
 									/>
 								}
@@ -320,14 +276,9 @@ const RegisterPage: NextPage = () => {
 								}}
 								sitekey="6LfoQxkiAAAAAOU3Tzbyc2T7O7BdGdM7A4qLMFqX"
 								onChange={(response: any) =>
-									formik.setFieldValue("recaptcha", response)
+									setFieldValue("recaptcha", response)
 								}
-								// ref={reRef}
 							/>
-							{/* {formik.errors.recaptcha &&
-								formik.touched.recaptcha && (
-									<p>{formik.errors.recaptcha}</p>
-								)} */}
 						</Box>
 
 						<ButtonLoading

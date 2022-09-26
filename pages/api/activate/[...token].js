@@ -6,9 +6,7 @@ import Link from "next/link";
 
 const ActivateAccount = () => {
 	const router = useRouter();
-	const slug = (router.query.slug as string[]) || [];
-
-	console.log(slug, "slug");
+	const slug = (router.query.slug) || [];
 
 	return (
 		<Container maxWidth="lg">

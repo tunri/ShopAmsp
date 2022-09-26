@@ -7,7 +7,7 @@ export type IFormRegister = {
     phoneNumber     : string;
     dayOfBirth      : any;
     isSubscription? : boolean;
-	recaptcha		: string;
+	recaptcha?		: string;
 };
 
 export type INewUserRequest = Omit<IFormRegister, 'recaptcha'> & {

@@ -10,12 +10,12 @@ import {
 	OptionFilterStyled,
 } from "./AccordionStyled";
 
-import { IFilterProduct } from "../../@interfaces/IProductFilter";
+import { IFilterOption, IFilterProduct } from "../../@interfaces/IProductFilter";
 
 type Props = {
 	keyId: string | number;
 	name: string;
-	options: IFilterProduct[];
+	options: IFilterOption[];
 	index?: number;
 };
 

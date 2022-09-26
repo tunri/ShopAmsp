@@ -27,6 +27,11 @@ const Header = () => {
 	const [openMenu, setOpenMenu] = useState<boolean>(false);
 	const [hoverItem, setHoverItem] = useState<IMenuNavigation | null>(null);
 
+	let token = null;
+	if (typeof window !== "undefined") {
+		token = window.localStorage.getItem("token");
+	}
+
 	const onHoverMenuItem = (event: any) => {
 		setOpenMenu(true);
 	};
@@ -78,18 +83,20 @@ const Header = () => {
 						<ShoppingCart />
 					</IconButton>
 
-					<NextLink href="/login">
-						<Tooltip title="Iniciar sesión">
-							<IconButton
-								aria-label="Iniciar sesión"
-								sx={{ color: "common.white" }}
-							>
-								<PersonIcon />
-							</IconButton>
-						</Tooltip>
-					</NextLink>
-
-					{/* <UserProfileMenu /> */}
+					{token ? (
+						<UserProfileMenu />
+					) : (
+						<NextLink href="/login">
+							<Tooltip title="Iniciar sesión">
+								<IconButton
+									aria-label="Iniciar sesión"
+									sx={{ color: "common.white" }}
+								>
+									<PersonIcon />
+								</IconButton>
+							</Tooltip>
+						</NextLink>
+					)}
 				</Stack>
 			</Toolbar>
 
