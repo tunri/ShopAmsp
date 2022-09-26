@@ -12,14 +12,13 @@ type Props = {
 	product: IProduct;
 };
 
-
 const CardProduct = ({ product }: Props) => {
 	return (
 		<Card elevation={0}>
 			<CardMedia
 				component="img"
 				height="400"
-				image={product.image.src}
+				image={product.image}
 				alt="green iguana"
 			/>
 			<CardContent sx={{ textAlign: "center" }}>

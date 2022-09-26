@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import CLOTHES from "./helpers/clothes";
+import { MockProducts } from "./helpers/clothes";
 import ListProducts from "../components/ListProducts/ListProducts";
 import Container from "@mui/material/Container";
 
@@ -90,17 +90,23 @@ const Home: NextPage = () => {
 						</Box>
 						<TabPanel value={value} index={0}>
 							<Container maxWidth="lg">
-								<ListProducts products={CLOTHES}></ListProducts>
+								<ListProducts
+									products={MockProducts}
+								></ListProducts>
 							</Container>
 						</TabPanel>
 						<TabPanel value={value} index={1}>
 							<Container maxWidth="lg">
-								<ListProducts products={CLOTHES}></ListProducts>
+								<ListProducts
+									products={MockProducts}
+								></ListProducts>
 							</Container>
 						</TabPanel>
 						<TabPanel value={value} index={2}>
 							<Container maxWidth="lg">
-								<ListProducts products={CLOTHES}></ListProducts>
+								<ListProducts
+									products={MockProducts}
+								></ListProducts>
 							</Container>
 						</TabPanel>
 					</Grid>

@@ -4,7 +4,7 @@ import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import ListProducts from "../../components/ListProducts/ListProducts";
-import CLOTHES from "../helpers/clothes";
+import { MockProducts } from "../helpers/clothes";
 
 import { BoxPaddY } from "../../components-styled/BoxStyled";
 import ProductFilters from "../../components/ProductFilters/index";
@@ -41,7 +41,9 @@ const ProductCatalogue = () => {
 							<ProductFilters></ProductFilters>
 						</Grid>
 						<Grid item xs={12} md={9}>
-							<ListProducts products={CLOTHES}></ListProducts>
+							<ListProducts
+								products={MockProducts}
+							></ListProducts>
 						</Grid>
 					</Grid>
 				</Box>
