@@ -6,6 +6,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import ButtonLoading from "../../components/ButtonLoading";
+import Image from "next/image";
 
 const ProductDetail = () => {
 	const router = useRouter();
@@ -17,10 +18,10 @@ const ProductDetail = () => {
 				<Grid container spacing={4}>
 					<Grid item xs={12} md={6}>
 						<Box>
-							<img
+							<Image
 								src="https://i.imgur.com/tTEplrf.jpeg"
-								alt=""
-							/>
+								alt="Asociación de Moda Sostenible del Perú"
+							></Image>
 						</Box>
 					</Grid>
 					<Grid item xs={12} md={6}>
