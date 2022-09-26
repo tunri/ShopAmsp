@@ -4,10 +4,10 @@ import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import ListProducts from "../../components/ListProducts/ListProducts";
-import { MockProducts } from "../helpers/clothes";
 
 import { BoxPaddY } from "../../components-styled/BoxStyled";
 import ProductFilters from "../../components/ProductFilters/index";
+import { MockProducts } from "../../@data/Products";
 
 const ProductCatalogue = () => {
 	return (

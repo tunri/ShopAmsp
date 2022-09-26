@@ -6,9 +6,9 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import { MockProducts } from "./helpers/clothes";
 import ListProducts from "../components/ListProducts/ListProducts";
 import Container from "@mui/material/Container";
+import { MockProducts } from "../@data/Products";
 
 interface TabPanelProps {
 	children?: React.ReactNode;
