@@ -9,7 +9,7 @@ type Props = {
 
 const ListProducts = ({ products }: Props) => {
 	return (
-		<Grid container spacing={4} >
+		<Grid container spacing={4}>
 			{products.map((product, i) => (
 				<Grid item xs={12} md={4} key={i}>
 					<CardProduct product={product}></CardProduct>

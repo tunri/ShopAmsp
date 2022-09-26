@@ -7,7 +7,7 @@ import ListProducts from "../../components/ListProducts/ListProducts";
 import CLOTHES from "../helpers/clothes";
 
 import { BoxPaddY } from "../../components-styled/BoxStyled";
-import ProductFilters from "../../components/ProductFilters";
+import ProductFilters from "../../components/ProductFilters/index";
 
 const ProductCatalogue = () => {
 	return (
@@ -36,11 +36,11 @@ const ProductCatalogue = () => {
 				</Container>
 				<Divider sx={{ marginTop: 3, marginBottom: 5 }} />
 				<Box>
-					<Grid container spacing={0}>
-						<Grid item xs={6} md={4}>
+					<Grid container spacing={5}>
+						<Grid item xs={12} md={3}>
 							<ProductFilters></ProductFilters>
 						</Grid>
-						<Grid item xs={6} md={8}>
+						<Grid item xs={12} md={9}>
 							<ListProducts products={CLOTHES}></ListProducts>
 						</Grid>
 					</Grid>

@@ -12,6 +12,7 @@ type Props = {
 	product: IProduct;
 };
 
+
 const CardProduct = ({ product }: Props) => {
 	return (
 		<Card elevation={0}>
