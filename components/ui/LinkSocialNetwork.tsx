@@ -3,7 +3,7 @@ import NextLink from "next/link";
 
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import { ISocialNetwork } from "../@interfaces/ISocialNetwork";
+import { ISocialNetwork } from "../../@interfaces/ISocialNetwork";
 
 interface IProps {
 	socialNetwork: ISocialNetwork;

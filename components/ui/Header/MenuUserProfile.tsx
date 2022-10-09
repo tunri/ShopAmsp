@@ -51,7 +51,7 @@ const StyledMenu = styled((props: MenuProps) => (
 	},
 }));
 
-const UserProfileMenu = () => {
+const MenuUserProfile = () => {
 	const router = useRouter();
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
@@ -104,4 +104,4 @@ const UserProfileMenu = () => {
 	);
 };
 
-export default UserProfileMenu;
+export default MenuUserProfile;

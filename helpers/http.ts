@@ -6,4 +6,7 @@ const http = axios.create({
 	baseURL: "https://web-api-ecomerce.herokuapp.com/",
 });
 
+export const fetcher = (path: string) =>
+	http.get(path).then((res: any) => res.data);
+
 export default http;

@@ -12,8 +12,8 @@ import Grid from "@mui/material/Grid";
 import LinkSocialNetwork from "../LinkSocialNetwork";
 import MenuLanguages from "../MenuLanguages";
 
-import { SOCIAL_NETWORKS } from "../../@data/SocialNetwork";
-import { BoxPaddY } from "../../components-styled/BoxStyled";
+import { SOCIAL_NETWORKS } from "../../../@data/SocialNetwork";
+import { BoxPaddY } from "../../../components-styled/BoxStyled";
 
 const BoxLeftStyled = styled(Box)(() => ({
 	maxWidth: 600,

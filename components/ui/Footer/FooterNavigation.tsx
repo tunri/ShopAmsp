@@ -6,8 +6,8 @@ import Stack from "@mui/material/Stack";
 import LinkPage from "../LinkPage";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
-import { BoxPaddY } from "../../components-styled/BoxStyled";
-import { ABOUT_US, CUSTOMER_CARE } from "../../@data/FootMenuLinks";
+import { BoxPaddY } from "../../../components-styled/BoxStyled";
+import { ABOUT_US, CUSTOMER_CARE } from "../../../@data/FootMenuLinks";
 
 const TitleMenu = ({ text }: { text: string }) => {
 	return (

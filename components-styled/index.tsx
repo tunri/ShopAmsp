@@ -1,0 +1,1 @@
+export { BoxPaddY } from "./BoxStyled";

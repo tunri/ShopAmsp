@@ -1,20 +1,4 @@
-export type NavLink = {
-	text: string;
-	// key: string;
-};
-
-export type INavSection = {
-	title: string;
-	// key: string;
-	links: NavLink[];
-};
-
-export type IMenuNavigation = {
-	text: string;
-	key: string;
-	mens?: INavSection[];
-	women?: INavSection[];
-};
+import { IMenuNavigation } from "../@interfaces/IMenu";
 
 const DataMenuNavigation: IMenuNavigation[] = [
 	{

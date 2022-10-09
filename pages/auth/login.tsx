@@ -14,9 +14,10 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import http from "../../helpers/http";
-import ButtonLoading from "../../components/ButtonLoading";
+import ButtonLoading from "../../components/ui/ButtonLoading";
 import ListErrors from "../../components/ListErrors/ListErrors";
 import FormControlPassword from "../../components/forms/FormControlPassword";
+import { AuthLayout } from "../../components/layouts";
 
 const validationSchema = yup.object({
 	email: yup
@@ -29,7 +30,7 @@ const validationSchema = yup.object({
 		.max(50, "La contraseña debe tener máximo ${max} caracteres"),
 });
 
-const Login: NextPage = () => {
+const LoginPage: NextPage = () => {
 	const router = useRouter();
 	const [errors, setErrors] = useState<string[]>([]);
 	const { enqueueSnackbar } = useSnackbar();
@@ -80,14 +81,13 @@ const Login: NextPage = () => {
 	};
 
 	return (
-		<Box py={4}>
-			<Container sx={{ my: 8 }} maxWidth="xs">
+		<AuthLayout title="AMSP - Login" pageDescription="Inicia sesión para realizar tus compras">
+			<Box sx={{ my: 4 }}>
 				<ListErrors
 					sx={{ mb: 3 }}
 					errors={errors}
 					onClose={() => setErrors([])}
 				></ListErrors>
-
 				<Typography variant="h4" mb={3}>
 					Iniciar sesión
 				</Typography>
@@ -150,7 +150,7 @@ const Login: NextPage = () => {
 					<Typography variant="body1" align="center" mb={1}>
 						¿ No tienes una cuenta ?
 					</Typography>
-					<NextLink href="/register">
+					<NextLink href="/auth/register">
 						<Button
 							variant="outlined"
 							fullWidth
@@ -162,9 +162,9 @@ const Login: NextPage = () => {
 						</Button>
 					</NextLink>
 				</Box>
-			</Container>
-		</Box>
+			</Box>
+		</AuthLayout>
 	);
 };
 
-export default Login;
+export default LoginPage;

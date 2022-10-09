@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import { FC } from "react";
 import { IFilterProduct } from "../../@interfaces/IProductFilter";
 import Filter from "./Filter";
 
@@ -12,12 +13,16 @@ const DATA_FILTER: IFilterProduct[] = [
 	{ keyId: "size", name: "Talla", options: [] },
 ];
 
-const ProductFilters = () => {
+type Props = {
+	totalItems: number;
+};
+
+const ProductFilters: FC<Props> = ({ totalItems }) => {
 	return (
 		<Box>
 			<Box mb={1}>
 				<Typography variant="body2" color="#555">
-					999 Resultados
+					{totalItems} Resultados
 				</Typography>
 			</Box>
 			{DATA_FILTER.map((p) => (

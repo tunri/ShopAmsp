@@ -22,7 +22,7 @@ type Props = {
 const Filter = ({ name, keyId, options, index }: Props) => {
 	const uuid = index || keyId;
 
-	if (options.length === 0) return null;
+	// if (options.length === 0) return null;
 
 	return (
 		<AccordionStyled>

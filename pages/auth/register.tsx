@@ -21,7 +21,7 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import ButtonLoading from "../../components/ButtonLoading";
+import ButtonLoading from "../../components/ui/ButtonLoading";
 import FormControlPassword from "../../components/forms/FormControlPassword";
 import FormControlDatePicker from "../../components/forms/FormControlDatePicker";
 
@@ -29,6 +29,7 @@ import FormControlDatePicker from "../../components/forms/FormControlDatePicker"
 import { IFormRegister, INewUserRequest } from "../../models/authenticate";
 import { mapToNewUserRequest } from "../../mappers/authenticate";
 import ListErrors from "../../components/ListErrors/ListErrors";
+import { AuthLayout } from "../../components/layouts";
 
 const messageRequired = "Campo requerido";
 const validationSchema: yup.SchemaOf<IFormRegister> = yup.object({
@@ -112,22 +113,21 @@ const RegisterPage: NextPage = () => {
 
 	return (
 		<>
-			<Head>
-				<title>AMSP - Register</title>
-			</Head>
-			<Script
-				src="https://www.google.com/recaptcha/api.js"
-				async
-				defer
-			></Script>
-			<Box py={4}>
-				<Container sx={{ my: 8 }} maxWidth="xs">
+			<AuthLayout
+				title="AMSP - Register"
+				pageDescription="Inicia sesión para realizar tus compras"
+			>
+				<Script
+					src="https://www.google.com/recaptcha/api.js"
+					async
+					defer
+				></Script>
+				<Box>
 					<ListErrors
 						sx={{ mb: 3 }}
 						errors={errors}
 						onClose={() => setErrors([])}
 					></ListErrors>
-
 					<Typography variant="h4" mb={3}>
 						Crear cuenta
 					</Typography>
@@ -290,7 +290,7 @@ const RegisterPage: NextPage = () => {
 							sx={{ height: 56 }}
 							type="submit"
 						>
-							¿ Crear cuenta ?
+							Crear cuenta
 						</ButtonLoading>
 					</Box>
 					<Box mt={4} mb={3}>
@@ -298,21 +298,22 @@ const RegisterPage: NextPage = () => {
 					</Box>
 					<Box>
 						<Typography variant="body1" align="center" mb={1}>
-							Ya tienes una cuenta
+							¿ Ya tienes una cuenta ?
 						</Typography>
-						<NextLink href="/login">
+						<NextLink href="/auth/login">
 							<Button
 								variant="outlined"
 								fullWidth
 								size="large"
+								sx={{ height: 50 }}
 								type="submit"
 							>
 								iniciar sesión
 							</Button>
 						</NextLink>
 					</Box>
-				</Container>
-			</Box>
+				</Box>
+			</AuthLayout>
 		</>
 	);
 };

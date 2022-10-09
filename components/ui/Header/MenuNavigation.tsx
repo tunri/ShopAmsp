@@ -1,11 +1,15 @@
+/**
+ * Menu Navegacion Categorias, parte bot de header
+ */
+
 import React, { MouseEventHandler } from "react";
 import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
-import DataMenuNavigation, {
-	IMenuNavigation,
-} from "../../@data/MenuNavigations";
+
+import DataMenuNavigation from "../../../@data/MenuNavigation";
+import { IMenuNavigation } from "../../../@interfaces/IMenu";
 
 type Props = {
 	onMouseEnter: MouseEventHandler;
@@ -32,6 +36,7 @@ const MenuNavigation = ({
 						<Stack component="nav" direction="row">
 							{DataMenuNavigation.map((item) => (
 								<Link
+									href="/catalogue"
 									onMouseEnter={() => onMouseEnterLink(item)}
 									minHeight="64px"
 									lineHeight="64px"

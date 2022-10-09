@@ -1,4 +1,7 @@
-import React from "react";
+/**
+ * Inserta padding en Top y Bottom, util para separar contenido y border, especialmente para paginas
+ */
+
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 

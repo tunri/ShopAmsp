@@ -1,7 +1,7 @@
 import React from "react";
 import NextLink from "next/link";
 import { styled } from "@mui/material/styles";
-import { IFootMenuLink } from "../@interfaces/IMenu";
+import { IFootMenuLink } from "../../@interfaces/IMenu";
 
 interface IProps {
 	linkPage: IFootMenuLink;
