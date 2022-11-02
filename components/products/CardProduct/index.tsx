@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import NextLink from "next/link";
 import NextImage from "next/image";
 
@@ -14,8 +14,7 @@ import Link from "@mui/material/Link";
 
 // data types
 import { IProduct } from "../../../@interfaces/IProduct";
-import ImageNoAvailable from "../../../public/images/no-image.png";
-import usePrice from "../../../hooks/usePrice";
+import { formatCurrencyLocale } from "../../../helpers/currency";
 
 const imageDefault =
 	"https://images.pexels.com/photos/1055691/pexels-photo-1055691.jpeg";
@@ -25,10 +24,10 @@ type Props = {
 };
 
 const CardProduct: FC<Props> = ({ product }) => {
-	const images = product.imageUrls;
-	const priceText = usePrice(product.price);
-
-	const image = images.length > 0 ? images[0] : imageDefault;
+	// const [priceTextual, setPriceTextual] = useState();
+	const images = product.images;
+	const image = images.length > 0 ? images[0].url : imageDefault;
+	// useEffect(() => setPriceTextual((c) => formatCurrencyLocale(Number(c))), []);
 
 	return (
 		<Grid item xs={12} sm={6} md={4}>
@@ -68,13 +67,11 @@ const CardProduct: FC<Props> = ({ product }) => {
 						<CardContent sx={{ pb: "0 !important", px: 0 }}>
 							<Grid container spacing={1}>
 								<Grid item xs>
-									<Typography fontWeight={700}>
-										{product.name}
-									</Typography>
+									<Typography sx={{ fontSize : 14 }} fontWeight={500}>{product.name}</Typography>
 								</Grid>
 								<Grid item>
 									<Typography fontWeight={500}>
-										{`${priceText}`}
+										{formatCurrencyLocale(product.price)}
 									</Typography>
 								</Grid>
 							</Grid>

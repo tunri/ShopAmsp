@@ -16,6 +16,8 @@ const formatterLocale = new Intl.NumberFormat("es-PE", {
 	//maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
 });
 
-export const formatCurrencyLocale = (value: number) => formatterLocale.format(value);
+export const formatCurrencyLocale = (value: number) => {
+	return formatterLocale.format(value);
+};
 
 export const formatCurrency = (value: number) => formatter.format(value);

@@ -1,10 +1,10 @@
 /**
  * Menu Navegacion Categorias, parte bot de header
  */
-
+ import { styled } from "@mui/material/styles";
 import React, { MouseEventHandler } from "react";
 import Stack from "@mui/material/Stack";
-import Toolbar from "@mui/material/Toolbar";
+import Toolbar, { ToolbarProps } from "@mui/material/Toolbar";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 
@@ -24,13 +24,7 @@ const MenuNavigation = ({
 }: Props) => {
 	return (
 		<>
-			<Toolbar
-				sx={{
-					flexWrap: "wrap",
-					alignItems: "center",
-					justifyContent: "center",
-				}}
-			>
+			<Toolbar variant="dense" sx={{ justifyContent: "center" }}>
 				<Box onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
 					{DataMenuNavigation.length > 0 ? (
 						<Stack component="nav" direction="row">
@@ -38,8 +32,6 @@ const MenuNavigation = ({
 								<Link
 									href="/catalogue"
 									onMouseEnter={() => onMouseEnterLink(item)}
-									minHeight="64px"
-									lineHeight="64px"
 									key={item.key}
 									sx={{
 										color: "common.white",

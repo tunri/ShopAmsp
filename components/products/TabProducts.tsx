@@ -8,6 +8,7 @@ import Container from "@mui/material/Container";
 import { MockProducts } from "../../@data/Products";
 import ListProducts from "./ListProducts";
 import { IProduct } from "../../@interfaces/IProduct";
+import EmptyData from "../ui/EmptyData";
 
 interface TabPanelProps {
 	children?: React.ReactNode;
@@ -40,17 +41,22 @@ function a11yProps(index: number) {
 }
 
 type Props = {
-	newProducts: IProduct[];
-	bestSellers: IProduct[];
-	offSale: IProduct[];
+	newProducts?: IProduct[];
+	bestSellers?: IProduct[];
+	offSale?: IProduct[];
 };
 
-const TabProducts: FC<Props> = ({ newProducts, bestSellers, offSale }) => {
-	
+const TabProducts: FC<Props> = ({
+	newProducts = [],
+	bestSellers = [],
+	offSale = [],
+}) => {
 	const [value, setValue] = useState(0);
 	const handleChange = (event: React.SyntheticEvent, newValue: number) => {
 		setValue(newValue);
 	};
+
+	console.log(offSale, "offSale");
 
 	return (
 		<>
@@ -62,22 +68,24 @@ const TabProducts: FC<Props> = ({ newProducts, bestSellers, offSale }) => {
 				sx={{ mb: 4 }}
 			>
 				<Tab label="NUEVOS PRODUCTOS" {...a11yProps(0)} />
-				<Tab label="LO MAS VENDIDO" {...a11yProps(1)} />
-				<Tab label="EN DESCUENTO" {...a11yProps(2)} />
+				<Tab label="EN DESCUENTO" {...a11yProps(1)} />
 			</Tabs>
 			<TabPanel value={value} index={0}>
 				<Container maxWidth="lg" sx={{ px: "0 !important" }}>
-					<ListProducts products={newProducts}></ListProducts>
+					{newProducts.length ? (
+						<ListProducts products={newProducts}></ListProducts>
+					) : (
+						<EmptyData />
+					)}
 				</Container>
 			</TabPanel>
 			<TabPanel value={value} index={1}>
 				<Container maxWidth="lg" sx={{ px: "0 !important" }}>
-					<ListProducts products={bestSellers}></ListProducts>
-				</Container>
-			</TabPanel>
-			<TabPanel value={value} index={2}>
-				<Container maxWidth="lg" sx={{ px: "0 !important" }}>
-					<ListProducts products={offSale}></ListProducts>
+					{offSale.length > 0 ? (
+						<ListProducts products={offSale}></ListProducts>
+					) : (
+						<EmptyData />
+					)}
 				</Container>
 			</TabPanel>
 		</>

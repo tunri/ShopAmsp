@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
@@ -6,60 +6,50 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import ButtonLoading from "../../components/ui/ButtonLoading";
-import Image from "next/image";
 import http from "../../helpers/http";
 import { ShopLayout } from "../../components/layouts";
 import { IProduct } from "../../@interfaces/IProduct";
-import CardMedia from "@mui/material/CardMedia";
 import Link from "@mui/material/Link";
-import usePrice from "../../hooks/usePrice";
 import TagSize from "../../components/ui/TagSize";
-
-const imageDefault =
-	"https://images.pexels.com/photos/1055691/pexels-photo-1055691.jpeg";
+import { formatCurrencyLocale } from "../../helpers/currency";
+import CarouselProducts from "../../components/products/CarouselProducts/CarouselProducts";
+import Parser from "html-react-parser";
 
 type Props = {
 	product: IProduct;
+	outfit: any;
 };
 
-const ProductDetail: FC<Props> = ({ product }) => {
-	const images = product.imageUrls;
-	const image = images.length > 0 ? images[0] : imageDefault;
-
-	const [price, setPrice] = useState(0);
+const ProductDetail: FC<Props> = ({ product, outfit }) => {
+	const images = product.images.map((i) => i.url);
+	const price = formatCurrencyLocale(product.price);
+	const [description, setDescription] = useState("");
 
 	useEffect(() => {
-		setPrice(product.price);
+		setDescription(product.description);
 	}, []);
-
-	const priceText = usePrice(price);
 
 	return (
 		<ShopLayout title="Producto - NameProduct" pageDescription="Product">
 			<Box py={8}>
 				<Container maxWidth="lg">
-					<Grid container spacing={8}>
-						<Grid item xs={12} md={6}>
-							<CardMedia
-								component="img"
-								image={image}
-								height={500}
-								alt={product.name}
-								sx={{
-									backgroundColor: "#e5e5e5",
-									borderRadius: 1,
-								}}
-							/>
+					<Grid container spacing={2}>
+						<Grid item xs={12} md={6} lg={8}>
+							<Box sx={{ maxWidth: "90%" }}>
+								{images.length > 0 && (
+									<CarouselProducts items={images}></CarouselProducts>
+								)}
+							</Box>
 						</Grid>
-						<Grid item xs={12} md={6}>
-							<Box sx={{ maxWidth: "80%", margin: "auto" }}>
+						<Grid item xs={12} md={6} lg={4}>
+							<Box>
 								<Box mb={2}>
 									<Typography
-										variant="h4"
+										variant="h5"
 										mb={1}
 										sx={{
 											textTransform: "uppercase",
-											fontWeight: 400,
+											fontWeight: 500,
 										}}
 									>
 										{product.name}
@@ -81,31 +71,23 @@ const ProductDetail: FC<Props> = ({ product }) => {
 											fontWeight: 500,
 										}}
 									>
-										{priceText}
+										{price}
 									</Typography>
 								</Box>
 
 								<Box>
 									<Stack direction="row" spacing={1} mb={2}>
-										<Typography
-											variant="body2"
-											color="#777"
-										>
+										<Typography variant="body2" color="#777">
 											Color:
 										</Typography>
-										<Typography variant="body2">
-											White
-										</Typography>
+										<Typography variant="body2">White</Typography>
 									</Stack>
 								</Box>
 
 								<Box>
 									<Grid container spacing={2}>
 										<Grid item xs pt={0}>
-											<Typography
-												variant="body2"
-												color="#777"
-											>
+											<Typography variant="body2" color="#777">
 												Size
 											</Typography>
 										</Grid>
@@ -133,8 +115,10 @@ const ProductDetail: FC<Props> = ({ product }) => {
 									<Typography variant="h6" component="h6">
 										Descripción
 									</Typography>
-									<Typography variant="body1" component="p">
-										{product.description}
+									<Typography variant="body1" component="div">
+										<div
+											dangerouslySetInnerHTML={{ __html: description }}
+										></div>
 									</Typography>
 								</Box>
 
@@ -160,22 +144,32 @@ const ProductDetail: FC<Props> = ({ product }) => {
 export async function getServerSideProps(context: any) {
 	const { id } = context.params;
 
-	try {
-		const { data } = await http.get(`/products/${id}/`);
+	const { data: product } = await http.get(`/products/${id}/`);
+	// const { data: dataOutfit } = await http.get(`/products/${id}/outfits/`);
 
-		return {
-			props: {
-				product: data,
-			},
-		};
-	} catch (error) {
-		return {
-			redirect: {
-				permanent: false,
-				destination: "/product/not-found",
-			},
-		};
-	}
+	return {
+		props: {
+			product: product,
+			// outfit: dataOutfit,
+		},
+	};
+
+	// try {
+	// 	const { data } = await http.get(`/products/${id}/`);
+
+	// 	return {
+	// 		props: {
+	// 			product: data,
+	// 		},
+	// 	};
+	// } catch (error) {
+	// 	return {
+	// 		redirect: {
+	// 			permanent: false,
+	// 			destination: "/product/not-found",
+	// 		},
+	// 	};
+	// }
 }
 
 export default ProductDetail;

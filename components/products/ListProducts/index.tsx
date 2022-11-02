@@ -6,10 +6,10 @@ import CardProduct from "../CardProduct";
 import { IProduct } from "../../../@interfaces/IProduct";
 
 type Props = {
-	products: IProduct[];
+	products?: IProduct[];
 };
 
-const ListProducts: FC<Props> = ({ products }) => {
+const ListProducts: FC<Props> = ({ products = [] }) => {
 	return (
 		<Grid container spacing={4}>
 			{products.map((product, i) => (

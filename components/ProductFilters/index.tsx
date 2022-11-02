@@ -1,23 +1,36 @@
+import { FC, SetStateAction } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { FC } from "react";
-import { IFilterProduct } from "../../@interfaces/IProductFilter";
-import Filter from "./Filter";
-
-const DATA_FILTER: IFilterProduct[] = [
-	{ keyId: "category", name: "Categoría", options: [] },
-	{ keyId: "rating", name: "Clasificación", options: [] },
-	{ keyId: "type", name: "Tipo", options: [] },
-	{ keyId: "class", name: "Clase", options: [] },
-	{ keyId: "color", name: "Color", options: [] },
-	{ keyId: "size", name: "Talla", options: [] },
-];
+import TextField from "@mui/material/TextField";
+import RadioGroup from "@mui/material/RadioGroup";
+import Radio from "@mui/material/Radio";
+import {
+	AccordionDetailsStyled,
+	AccordionStyled,
+	AccordionSummaryStyled,
+} from "./AccordionStyled";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { QueryCatalogue } from "../../pages/catalogue";
 
 type Props = {
 	totalItems: number;
+	brands: any[];
+	query: QueryCatalogue;
+	setQuery: React.Dispatch<SetStateAction<QueryCatalogue>>;
 };
 
-const ProductFilters: FC<Props> = ({ totalItems }) => {
+const ProductFilters: FC<Props> = ({
+	totalItems = 0,
+	brands = [],
+	query,
+	setQuery,
+}) => {
+	const onChangeField = (event: any) => {
+		const { value, name } = event.target;
+		setQuery((v) => ({ ...v, [name]: value, page: 1 }));
+	};
+
 	return (
 		<Box>
 			<Box mb={1}>
@@ -25,14 +38,49 @@ const ProductFilters: FC<Props> = ({ totalItems }) => {
 					{totalItems} Resultados
 				</Typography>
 			</Box>
-			{DATA_FILTER.map((p) => (
-				<Filter
-					name={p.name}
-					key={p.keyId}
-					keyId={p.keyId}
-					options={p.options}
+			<Box mb={3}>
+				<TextField
+					fullWidth
+					label="Buscar por nombre"
+					variant="filled"
+					name="name"
+					value={query.name}
+					onChange={onChangeField}
 				/>
-			))}
+			</Box>
+
+			<AccordionStyled>
+				<AccordionSummaryStyled
+					expandIcon={<ExpandMoreIcon />}
+					aria-controls={`panel-brand-content`}
+					id={`panel-brand-content`}
+				>
+					<Typography>Marca</Typography>
+				</AccordionSummaryStyled>
+				<AccordionDetailsStyled>
+					<RadioGroup
+						aria-labelledby="marcas"
+						defaultValue="female"
+						name="brand"
+						value={query.brand}
+						onChange={onChangeField}
+					>
+						<FormControlLabel
+							value=''
+							control={<Radio />}
+							label='Todos'
+						/>
+						{brands.map((c: any) => (
+							<FormControlLabel
+								value={c.slug}
+								control={<Radio />}
+								label={c.name}
+								key={c.id}
+							/>
+						))}
+					</RadioGroup>
+				</AccordionDetailsStyled>
+			</AccordionStyled>
 		</Box>
 	);
 };

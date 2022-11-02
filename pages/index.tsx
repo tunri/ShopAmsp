@@ -9,17 +9,19 @@ import { ShopLayout } from "../components/layouts";
 
 import { BoxPaddY } from "../components-styled";
 import http from "../helpers/http";
-import { IAxiosResponse } from "../@interfaces/IResponse";
+import { IProduct } from "../@interfaces/IProduct";
 
-const Home: NextPage = ({ products }) => {
-	console.log(products, "products");
+type Props = {
+	newProducts: any;
+	discountProducts: any;
+};
+
+const Home: NextPage<Props> = ({ newProducts, discountProducts }) => {
 
 	return (
 		<ShopLayout
 			title={"AMSP - Home"}
-			pageDescription={
-				"Encuentra los mejores productos de moda sostenible"
-			}
+			pageDescription={"Encuentra los mejores productos de moda sostenible"}
 		>
 			<BoxPaddY>
 				<Container maxWidth="lg">
@@ -28,15 +30,14 @@ const Home: NextPage = ({ products }) => {
 							component="h2"
 							variant="h3"
 							color="primary"
-							sx={{ width: "100%", textAlign: "center" }}
+							sx={{ width: "100%", textAlign: "center", mb: 2 }}
 						>
 							Productos
 						</Typography>
-						<Box>
+						<Box sx={{ width: "100%" }}>
 							<TabProducts
-								bestSellers={products}
-								newProducts={products}
-								offSale={products}
+								newProducts={newProducts}
+								offSale={discountProducts}
 							/>
 						</Box>
 					</Grid>
@@ -46,12 +47,15 @@ const Home: NextPage = ({ products }) => {
 	);
 };
 
-export async function getStaticProps(context) {
-	const { status, data } = await http.get("/products");
+export async function getServerSideProps(context: any) {
+	// productos recientes
+	const { data: newProducts } = await http.get("/products/last-added");
+	const { data: discountProducts } = await http.get("/products/with-discount");
 
 	return {
 		props: {
-			products: data.results.slice(0, 6),
+			newProducts,
+			discountProducts,
 		},
 	};
 }

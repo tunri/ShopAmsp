@@ -34,7 +34,7 @@ const FooterNavigation = () => {
 			<Container maxWidth="lg">
 				<Box>
 					<Grid container spacing={1}>
-						<Grid item xs={12} md={4}>
+						<Grid item xs={12} sm={4}>
 							<TitleMenu text="CUSTOMER CARE" />
 
 							{/* Block List Social Networks */}
@@ -49,7 +49,7 @@ const FooterNavigation = () => {
 							</Stack>
 							{/* End Block List Social Networks */}
 						</Grid>
-						<Grid item xs={12} md={4}>
+						<Grid item xs={12} sm={4}>
 							<TitleMenu text="ABOUT US" />
 
 							{/* Block List Social Networks */}
@@ -64,7 +64,7 @@ const FooterNavigation = () => {
 							</Stack>
 							{/* End Block List Social Networks */}
 						</Grid>
-						<Grid item xs={12} md={4}>
+						<Grid item xs={12} sm={4}>
 							<TitleMenu text="AMSP" />
 							<Typography variant="body2" color="#888">
 								Shop from over 500 of the worlds finest luxury
