@@ -1,8 +1,8 @@
 import Box from "@mui/system/Box";
 import React from "react";
-import { INavSection } from "../../../@data/MenuNavigations";
 import Stack from "@mui/material/Stack";
 import ItemListColumn from "./ItemListColumn";
+import { INavSection } from "../../../../@interfaces/IMenu";
 
 type Props = {
 	sections: INavSection[] | undefined;

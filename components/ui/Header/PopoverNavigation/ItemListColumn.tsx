@@ -1,7 +1,8 @@
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/system/Box";
-import { NavLink } from "../../../@data/MenuNavigations";
+import { NavLink } from "../../../../@interfaces/IMenu";
+
 
 type Props = {
 	title: string;

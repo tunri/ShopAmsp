@@ -1,11 +1,11 @@
 import { MouseEventHandler, useState } from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { IMenuNavigation } from "../../../@data/MenuNavigations";
 import styles from "./PopoverNavigation.module.scss";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import MenuListColumn from "./MenuListColumn";
 import Container from "@mui/material/Container";
+import { IMenuNavigation } from "../../../../@interfaces/IMenu";
 
 type Prop = {
 	item: IMenuNavigation | null;
